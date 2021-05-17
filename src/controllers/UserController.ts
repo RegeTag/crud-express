@@ -33,13 +33,13 @@ class UserController{
 
         await userRepository.save(user)
 
-        res.sendStatus(201)
+        res.status(201).json({"message":"User created!"})
     }
 
     async getAll(req:Request, res:Response){
         const userRepository = getCustomRepository(UserRepository)
 
-        const users = await userRepository.find({select:[ 'id', 'first_name', 'last_name']})
+        const users = await userRepository.find({select:[ 'id', 'first_name', 'last_name', 'created_at']})
 
         return res.status(200).json(users)
     }
@@ -49,14 +49,11 @@ class UserController{
 
         const {id} = req.params
 
-        const user = await userRepository.findOne({where:{id}})
+        const user = await userRepository.findOne({where:{id}, select:['id', 'first_name', 'last_name', 'created_at']})
 
         if(!user){
             return res.status(400).json({"message": "User not found!"})
         }
-
-        delete user.password 
-        delete user.email 
 
         return res.status(200).json(user)
     }
