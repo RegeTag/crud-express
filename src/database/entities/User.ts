@@ -16,9 +16,6 @@ export class User{
     email: string
 
     @Column()
-    login: string
-
-    @Column()
     password: string
 
     @CreateDateColumn()

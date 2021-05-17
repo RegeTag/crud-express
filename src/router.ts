@@ -3,6 +3,8 @@ import UserController from './controllers/UserController'
 
 const router = Router()
 
+router.get("/users", UserController.getAll)
+router.get("/users/:id", UserController.getOne)
 router.post("/users", UserController.create)
 
 export default router
