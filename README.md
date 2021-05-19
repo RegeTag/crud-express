@@ -1,6 +1,5 @@
 ## Simple User CRUD with express
 
-$~~~~~~~~~~~$
 
 # Initial steps:
 
@@ -23,7 +22,6 @@ npm run cli migration:run
 yarn cli migration:run
 ```
 
-$~~~~~~~~~~~$
 
 # Routes
 
@@ -54,7 +52,6 @@ Return status 201
 
 ----
 
-$~~~~~~~~~~~$
 
 Update user
 ---
@@ -76,14 +73,12 @@ Return status 200
 ```
 ----
 
-$~~~~~~~~~~~$
 
 Get all users
 ---
 
 GET http://localhost:3000/users
 
-return status 200
 ```json
 [
   {
@@ -94,21 +89,42 @@ return status 200
   }
 ]
 ```
+return status 200
+
 ---
 
-$~~~~~~~~~~~$
 
 Get one user by id
 ---
 
 GET http://localhost:3000/users/:id
 
-return status 200
 ```json
 {
   "id": ,
   "first_name": "",
   "last_name": "",
   "created_at": ""
+}
+
+```
+return status 200
+
+----
+
+Delete user by id
+---
+
+DELETE http://localhost:3000/users/:id
+```json
+{
+  "password":""
+}
+```
+
+return status 200
+```json
+{
+  "message":"User deleted!"
 }
 ```

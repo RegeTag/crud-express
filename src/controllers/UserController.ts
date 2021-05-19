@@ -68,7 +68,7 @@ class UserController{
         const user = await userRepository.findOne({where:{id}})
 
         if(!user){
-            return res.status(400).json({"message":"couldn't find user!"})
+            return res.status(400).json({"message":"User not found!"})
         }  
 
         if(user.password != password){
@@ -84,6 +84,28 @@ class UserController{
         await userRepository.save(updatedUser)
 
         return res.status(200).json({"message": "User updated with success!"})
+    }
+
+    async delete(req:Request, res:Response){
+        const userRepository = getCustomRepository(UserRepository)
+
+        const {id} = req.params
+
+        const {password} = req.body
+
+        const user = await userRepository.findOne({where: {id}})
+
+        if(!user){
+            return res.status(400).json({"message":"User not found!"})
+        }
+
+        if(password != user.password){
+            return res.status(400).json({"message":"Wrong password!"})
+        }
+
+        await userRepository.remove(user)
+
+        res.status(200).json({"message":"User deleted!"})
     }
 }
 
