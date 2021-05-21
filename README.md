@@ -59,9 +59,9 @@ PUT http://localhost:3000/users/:id
 with a json body:
 ```json
 {
-	"firstName":"",
-	"lastName":"",
-	"password":""
+	"newFirstName":"",
+	"newLastName":"",
+	"currentPassword":""
 }
 ```
 

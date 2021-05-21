@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm"
+import { hash } from 'bcryptjs'
+import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity("users")
 export class User{
@@ -20,4 +21,9 @@ export class User{
 
     @CreateDateColumn()
     created_at: Date
+
+    @BeforeInsert()
+    async hashPassword(){
+        this.password = await hash(this.password, 12)
+    }
 }

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { getCustomRepository } from 'typeorm'
 import UserRepository from '../database/repositories/UserRepository'
+import { compare } from 'bcryptjs'
 
 
 
@@ -9,7 +10,9 @@ class UserController{
         
         const userRepository = getCustomRepository(UserRepository)
 
-        const { firstName, lastName, email, password } = req.body
+        const { firstName, lastName, password } = req.body
+
+        const email:string = (req.body.email).toLowerCase()
 
 
         const userInDatabase = await userRepository.findOne({where:{email}})
@@ -63,7 +66,7 @@ class UserController{
 
         const {id} = req.params
 
-        const {firstName, lastName, password} = req.body
+        const {newFirstName, newLastName, currentPassword} = req.body
 
         const user = await userRepository.findOne({where:{id}})
 
@@ -71,14 +74,18 @@ class UserController{
             return res.status(400).json({"message":"User not found!"})
         }  
 
-        if(user.password != password){
-            return res.status(400).json({"message": "Current password wrong!"})
+        const isValid = await compare(currentPassword, user.password)
+
+        console.log(isValid)
+
+        if(isValid === false){
+            return res.status(400).json({"message": "Password wrong!"})
         }
 
         const updatedUser = userRepository.create({
             ...user,
-            first_name: !firstName ? user.first_name : firstName,
-            last_name: !lastName ? user.last_name : lastName
+            first_name: !newFirstName ? user.first_name : newFirstName,
+            last_name: !newLastName ? user.last_name : newLastName
         })
 
         await userRepository.save(updatedUser)
@@ -99,7 +106,9 @@ class UserController{
             return res.status(400).json({"message":"User not found!"})
         }
 
-        if(password != user.password){
+        const isValid = await compare(password, user.password)
+
+        if(isValid === false){
             return res.status(400).json({"message":"Wrong password!"})
         }
 
